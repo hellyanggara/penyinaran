@@ -4,40 +4,60 @@ $leveldir = '../';
 include $leveldir.'config/connection.config.php';
 include $leveldir . 'config/function.php';
 
-$kdRuangan = '290';
+$kdRuangan = $_GET['kdRuangan'];
 $kelompok = $_GET['kelompok'];
 $tinggiTabel = $_GET['tinggiTabel'];
 $tinggiRowAtas = $_GET['tinggiRowAtas'];
 $tinggiRowBawah = $_GET['tinggiRowBawah'];
 $maksimalPasien = $_GET['maksimalPasien'];
-$count = sqlsrv_fetch_object(sqlsrv_query($connection, "SELECT
-    count(RegistrasiRJ.NoPendaftaran) as jml
+$count = sqlsrv_fetch_object(sqlsrv_query($connection, "SELECT COUNT(DATA.NoPendaftaran) as jml FROM
+(
+SELECT
+	RegistrasiRJ.NoCM,
+	RegistrasiRJ.NoPendaftaran,
+	RegistrasiRJ.TglMasuk,
+	Pasien.Title,
+	Pasien.NamaLengkap,
+	KelompokAntrianPenyinaran.Kelompok,
+	( SELECT COUNT ( NoPendaftaran ) FROM CPPT WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran ) AS jml_cppt 
 FROM
-    RegistrasiRJ
-    LEFT JOIN KelompokAntrianPenyinaran ON RegistrasiRJ.NoCM = KelompokAntrianPenyinaran.NoRM 
-WHERE
-    -- CAST ( TglMasuk AS DATE ) = CAST ( GETDATE() AS DATE ) 
-    CAST ( RegistrasiRJ.TglMasuk AS DATE ) BETWEEN '2021-10-20' AND '2022-11-09' 
-    AND KdRuangan = '$kdRuangan' 
-    AND KelompokAntrianPenyinaran.Kelompok = '$kelompok'"));
-$sql = "SELECT
-    RegistrasiRJ.NoCM,
-    RegistrasiRJ.NoPendaftaran,
-    Pasien.Title,
-    Pasien.NamaLengkap,
-    KelompokAntrianPenyinaran.Kelompok	
+	RegistrasiRJ
+	LEFT JOIN Pasien ON Pasien.NoCM = RegistrasiRJ.NoCM
+	LEFT JOIN KelompokAntrianPenyinaran ON RegistrasiRJ.NoCM = KelompokAntrianPenyinaran.NoRM 
+	WHERE
+    -- CAST ( RegistrasiRJ.TglMasuk AS DATE ) = CAST ( GETDATE() AS DATE )
+	CAST ( TglMasuk AS DATE ) BETWEEN '2021-10-20' AND '2022-11-09' 
+	AND KdRuangan = '$kdRuangan' 
+	AND KelompokAntrianPenyinaran.Kelompok = '$kelompok' 
+	) as DATA
+	WHERE DATA.jml_cppt > 0
+"));
+$sql = "SELECT * FROM
+(
+SELECT
+	RegistrasiRJ.NoCM,
+	RegistrasiRJ.NoPendaftaran,
+	RegistrasiRJ.TglMasuk,
+	Pasien.Title,
+	Pasien.NamaLengkap,
+	KelompokAntrianPenyinaran.Kelompok,
+	( SELECT COUNT ( NoPendaftaran ) FROM CPPT WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran ) AS jml_cppt 
 FROM
-    RegistrasiRJ 
-    LEFT JOIN Pasien ON Pasien.NoCM = RegistrasiRJ.NoCM
-    LEFT JOIN KelompokAntrianPenyinaran ON RegistrasiRJ.NoCM = KelompokAntrianPenyinaran.NoRM
+	RegistrasiRJ
+	LEFT JOIN Pasien ON Pasien.NoCM = RegistrasiRJ.NoCM
+	LEFT JOIN KelompokAntrianPenyinaran ON RegistrasiRJ.NoCM = KelompokAntrianPenyinaran.NoRM 
 WHERE
-    -- CAST ( TglMasuk AS DATE ) = CAST ( GETDATE() AS DATE ) 
-    CAST ( TglMasuk AS DATE ) BETWEEN '2021-10-20' AND '2022-11-09'
+    -- CAST ( RegistrasiRJ.TglMasuk AS DATE ) = CAST ( GETDATE() AS DATE ) 
+    CAST ( TglMasuk AS DATE ) BETWEEN '2021-10-20' AND '2022-11-09' 
     AND KdRuangan = '$kdRuangan' 
     AND KelompokAntrianPenyinaran.Kelompok = '$kelompok'
-ORDER BY TglMasuk DESC";
+	) as DATA
+	WHERE DATA.jml_cppt > 0
+ORDER BY
+	DATA.TglMasuk DESC";
 $query = sqlsrv_query($connection, $sql);
 $urut = 1;
+// echo $sql;
 ?>
 <div class="card-body table-responsive pt-0 overflow-hidden" id="patientCardBody<?php echo $kelompok ?>" style="height: <?php echo $tinggiTabel ?>px;">
     <table class="table table-head-fixed text-nowrap" id="patientTable<?php echo $kelompok ?>">
@@ -65,12 +85,14 @@ $urut = 1;
                 foreach ($names as $nama) {
                     $inisial .= substr($nama, 0, 1);
                 }
+                if($dt->jml_cppt > 0){
                 echo '
                     <tr >
                         <td><h5>'.$kelompok.$urut++.'</h5></td>
                         <td><h5>'.$dt->NoCM.'</h5></td>
                         <td><h5>'.$dt->Title.' '.$inisial.'</h5></td>
                     </tr>';
+                }
             }
             if($count->jml > $maksimalPasien){
                 echo '

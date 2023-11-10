@@ -4,7 +4,7 @@
     $leveldir = '';
     include $leveldir.'config/connection.config.php';
     include $leveldir.'config/function.php';
-
+    $judul = sqlsrv_fetch_object(sqlsrv_query($connection, "SELECT * FROM Ruangan WHERE KdRuangan = (SELECT kd_ruangan FROM master_setting_layar_penyinaran)"));
 ?>
 <!DOCTYPE html>
 <html lang="id, in">
@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Antrian | Penyinaran 1</title>
+    <title>Antrian | <?php echo $judul->NamaRuangan ?></title>
     <link rel="icon" href="vendor/dist/img/rskd.png" type="image/x-icon">
     <?php include($leveldir . 'include/_style.php'); ?>
 </head>
@@ -31,7 +31,7 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item h2 d-block d-md-block d-lg-block d-xl-block text-center">
-                    ANTRIAN PASIEN RUANG PENYINARAN 1<br>
+                    ANTRIAN PASIEN RUANG <?php echo strtoupper($judul->NamaRuangan) ?><br>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">

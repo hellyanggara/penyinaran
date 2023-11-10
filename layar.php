@@ -30,7 +30,7 @@ while ($dtMaster = sqlsrv_fetch_object($queryMaster)) {?>
                 $('#data-antrian<?php echo $dtMaster->nama ?>').html('<div class="m-3 d-flex justify-content-center"><div class="line-wobble"></div></div>');
             },
             success: function(response) {
-                $('#data-antrian<?php echo $dtMaster->nama ?>').load("viewer/data-antrian.php?kdRuangan=290&kelompok=<?php echo $dtMaster->nama ?>&tinggiTabel=<?php echo $dtSetting->tinggi_tabel?>&tinggiRowAtas=<?php echo $dtSetting->tinggi_row_atas ?>&tinggiRowBawah=<?php echo $dtSetting->tinggi_row_bawah ?>&maksimalPasien=<?php echo $dtSetting->maksimal_pasien ?>");    
+                $('#data-antrian<?php echo $dtMaster->nama ?>').load("viewer/data-antrian.php?kdRuangan=<?php echo $dtSetting->kd_ruangan?>&kelompok=<?php echo $dtMaster->nama ?>&tinggiTabel=<?php echo $dtSetting->tinggi_tabel?>&tinggiRowAtas=<?php echo $dtSetting->tinggi_row_atas ?>&tinggiRowBawah=<?php echo $dtSetting->tinggi_row_bawah ?>&maksimalPasien=<?php echo $dtSetting->maksimal_pasien ?>");    
             }
         });
     </script>

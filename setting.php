@@ -15,6 +15,10 @@
         </div>
         <form id="formSetting" method="post" autocomplete="off">
             <div class="card-body">
+                <!-- <div class="form-group">
+                    <label>Kode Ruangan</label>
+                    <input type="number" class="form-control" name="kd_ruangan" placeholder="Kode Ruangan" value="<?php echo $dtSetting->kd_ruangan ?>">
+                </div> -->
                 <div class="form-group">
                     <label>Tinggi Tabel</label>
                     <input type="number" class="form-control" name="tinggi_tabel" placeholder="Tinggi Tabel" value="<?php echo $dtSetting->tinggi_tabel ?>">

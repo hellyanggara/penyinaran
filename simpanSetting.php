@@ -5,6 +5,7 @@
     include $leveldir.'config/connection.config.php';
     include $leveldir.'config/function.php';
 
+    // $kd_ruangan = $_POST['kd_ruangan'];
     $tinggi_tabel = $_POST['tinggi_tabel'];
     $tinggi_row_atas = $_POST['tinggi_row_atas'];
     $tinggi_row_bawah = $_POST['tinggi_row_bawah'];
