@@ -13,9 +13,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="dist/fonts/googleapis.css">
     <title>Antrian | Penyinaran 1</title>
-    <link rel="icon" href="dist/img/rskd.png" type="image/x-icon">
+    <link rel="icon" href="vendor/dist/img/rskd.png" type="image/x-icon">
     <?php include($leveldir . 'include/_style.php'); ?>
 </head>
 
@@ -27,7 +26,7 @@
         <nav class="main-header navbar navbar-expand navbar-light navbar-white text-sm">
             <ul class="navbar-nav">
             <li class="nav-item">
-                <img src="dist/img/rskd.png" class="img-circle ml-2" width="42px" height="42px">
+                <img src="vendor/dist/img/rskd.png" class="img-circle ml-2" width="42px" height="42px">
             </li>
             </ul>
             <ul class="navbar-nav ml-auto">
