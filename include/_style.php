@@ -1,5 +1,5 @@
 <?php
-$leveldir = '../';
+$leveldir = '';
 ?>
 <link href="<?php echo $leveldir ?>dist/lte/plugins/roboto/roboto.css" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo $leveldir ?>dist/lte/plugins/font-awesome-pro-5.12.0/css/all.css">

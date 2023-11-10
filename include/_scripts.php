@@ -1,5 +1,5 @@
 <?php
-$leveldir = '../';
+$leveldir = '';
 ?>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo $leveldir ?>dist/lte/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -34,6 +34,7 @@ $leveldir = '../';
 <script src="<?php echo $leveldir ?>dist/lte/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?php echo $leveldir ?>dist/lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="<?php echo $leveldir ?>plugins/sweetalert2/sweetalert2@11.js"></script>
 
 <!-- AdminLTE App -->
 <script src="<?php echo $leveldir ?>dist/lte/dist/js/adminlte.min.js"></script>

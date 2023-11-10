@@ -18,6 +18,15 @@
             }
         }
     }
+    
+    function dateNormalize($date) {
+        if ($date instanceof DateTime) {
+            return $date->getTimestamp();
+        } else {
+            return strtotime($date);
+        }
+    }
+    
     function cleaningtext($var){
         $varclean = str_replace("'", "`", $var);
         $varclean = str_replace('"', '`', $varclean);
