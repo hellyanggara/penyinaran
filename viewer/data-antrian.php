@@ -19,7 +19,8 @@ SELECT
 	Pasien.Title,
 	Pasien.NamaLengkap,
 	KelompokAntrianPenyinaran.Kelompok,
-	( SELECT COUNT ( NoPendaftaran ) FROM CPPT WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran ) AS jml_cppt 
+	( SELECT COUNT ( NoPendaftaran ) FROM CPPT LEFT JOIN MappingPegawaiNakes ON cppt.IdUser = MappingPegawaiNakes.IdPegawai LEFT JOIN MasterPPA ON MasterPPA.KdPPA = MappingPegawaiNakes.JenisPegawai WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran AND JenisPegawai = '2') AS jml_cppt_perawat,
+	( SELECT COUNT ( NoPendaftaran ) FROM CPPT LEFT JOIN MappingPegawaiNakes ON cppt.IdUser = MappingPegawaiNakes.IdPegawai LEFT JOIN MasterPPA ON MasterPPA.KdPPA = MappingPegawaiNakes.JenisPegawai WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran AND JenisPegawai IN ('15','10','10')) AS jml_cppt_rad
 FROM
 	RegistrasiRJ
 	LEFT JOIN Pasien ON Pasien.NoCM = RegistrasiRJ.NoCM
@@ -30,7 +31,7 @@ FROM
 	AND KdRuangan = '$kdRuangan' 
 	AND KelompokAntrianPenyinaran.Kelompok = '$kelompok' 
 	) as DATA
-	WHERE DATA.jml_cppt > 0
+	WHERE DATA.jml_cppt_perawat > 0 AND DATA.jml_cppt_rad < 1
 "));
 $sql = "SELECT * FROM
 (
@@ -41,7 +42,8 @@ SELECT
 	Pasien.Title,
 	Pasien.NamaLengkap,
 	KelompokAntrianPenyinaran.Kelompok,
-	( SELECT COUNT ( NoPendaftaran ) FROM CPPT WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran ) AS jml_cppt 
+	( SELECT COUNT ( NoPendaftaran ) FROM CPPT LEFT JOIN MappingPegawaiNakes ON cppt.IdUser = MappingPegawaiNakes.IdPegawai LEFT JOIN MasterPPA ON MasterPPA.KdPPA = MappingPegawaiNakes.JenisPegawai WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran AND JenisPegawai = '2') AS jml_cppt_perawat,
+	( SELECT COUNT ( NoPendaftaran ) FROM CPPT LEFT JOIN MappingPegawaiNakes ON cppt.IdUser = MappingPegawaiNakes.IdPegawai LEFT JOIN MasterPPA ON MasterPPA.KdPPA = MappingPegawaiNakes.JenisPegawai WHERE NoPendaftaran = RegistrasiRJ.NoPendaftaran AND JenisPegawai IN ('15','10','10')) AS jml_cppt_rad
 FROM
 	RegistrasiRJ
 	LEFT JOIN Pasien ON Pasien.NoCM = RegistrasiRJ.NoCM
@@ -52,7 +54,7 @@ WHERE
     AND KdRuangan = '$kdRuangan' 
     AND KelompokAntrianPenyinaran.Kelompok = '$kelompok'
 	) as DATA
-	WHERE DATA.jml_cppt > 0
+	WHERE DATA.jml_cppt_perawat > 0 AND DATA.jml_cppt_rad < 1
 ORDER BY
 	DATA.TglMasuk DESC";
 $query = sqlsrv_query($connection, $sql);
@@ -85,14 +87,12 @@ $urut = 1;
                 foreach ($names as $nama) {
                     $inisial .= substr($nama, 0, 1);
                 }
-                if($dt->jml_cppt > 0){
                 echo '
                     <tr >
                         <td><h5>'.$kelompok.$urut++.'</h5></td>
                         <td><h5>'.$dt->NoCM.'</h5></td>
                         <td><h5>'.$dt->Title.' '.$inisial.'</h5></td>
                     </tr>';
-                }
             }
             if($count->jml > $maksimalPasien){
                 echo '
