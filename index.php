@@ -151,8 +151,7 @@
             document.getElementById('day').innerHTML = now;
             clearInterval(showDate);
         }
-
-        setInterval(showDate, 64000);
+        setInterval(showDate, 60000);
         function loadAwal(){
             $.ajax({
                 beforeSend: function () {
