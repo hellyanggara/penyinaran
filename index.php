@@ -52,7 +52,7 @@
                 <div class="container-fluid pt-0 pb-1 px-0">
                     <div class="card mb-3">
                         <center>
-                            <h4 class="mt-3"><?php echo indonesiandate(date("Y/m/d"), 1) ?> <br><text id="clock"></text></h4>
+                            <h4 class="mt-3"><text id="day"><?php echo indonesiandate(date("Y/m/d"), 1) ?></text> <br><text id="clock"></text></h4>
                         </center>
                         <div class="card-body" id="bodyUtama">
                             <!-- <div class="row">
@@ -79,8 +79,80 @@
         $(document).ready(function() {
             loadAwal()
         })
-        function loadSetting(){
+        function showDate(){
+            var today = new Date();
+            let day = today.getDay();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            // console.log(day)
+            switch (mm) {
+                case '1':
+                    mm = 'Januari'
+                    break;
+                case '3':
+                    mm = 'Februari'
+                    break;
+                case '3':
+                    mm = 'Maret'
+                    break;
+                case '4':
+                    mm = 'April'
+                    break;
+                case '5':
+                    mm = 'Mei'
+                    break;
+                case '6':
+                    mm = 'Juni'
+                    break;
+                case '7':
+                    mm = 'Juli'
+                    break;
+                case '8':
+                    mm = 'Agustus'
+                    break;
+                case '9':
+                    mm = 'September'
+                    break;
+                case '10':
+                    mm = 'Oktober'
+                    break;
+                case '11':
+                    mm = 'November'
+                    break;
+                case '12':
+                    mm = 'Desember'
+                    break;
+            }
+            switch (day) {
+                case 1:
+                    day = 'Senin'
+                    break;
+                case 2:
+                    day = 'Selasa'
+                    break;
+                case 3:
+                    day = 'Rabu'
+                    break;
+                case 4:
+                    day = 'Kamis'
+                    break;
+                case 5:
+                    day = 'Jumat'
+                    break;
+                case 6:
+                    day = 'Sabtu'
+                    break;
+                case 7:
+                    day = 'Minggu'
+                    break;
+            }
+            now = day + ', ' + dd + ' ' + mm + ' ' + yyyy;
+            document.getElementById('day').innerHTML = now;
+            clearInterval(showDate);
         }
+
+        setInterval(showDate, 64000);
         function loadAwal(){
             $.ajax({
                 beforeSend: function () {

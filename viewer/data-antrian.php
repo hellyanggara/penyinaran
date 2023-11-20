@@ -150,9 +150,9 @@ if($count->jml > 0){
 }else{
 ?>
     window.setTimeout(function() {
-        console.group('Counting <?php echo $kelompok ?>');
-        console.log('tidak ada pasien')
-        console.groupEnd();
+        // console.group('Counting <?php echo $kelompok ?>');
+        // console.log('tidak ada pasien')
+        // console.groupEnd();
         $('#data-antrian<?php echo $kelompok ?>').load("viewer/data-antrian.php?kdRuangan=<?php echo $kdRuangan?>&kelompok=<?php echo $kelompok ?>&tinggiTabel=<?php echo $tinggiTabel?>&tinggiRowAtas=<?php echo $tinggiRowAtas ?>&tinggiRowBawah=<?php echo $tinggiRowBawah ?>&maksimalPasien=<?php echo $maksimalPasien ?>"); 
     }, (3000));
 <?php
